@@ -1,0 +1,11 @@
+public class AQMSDashboard {
+    // Matriz para almacenar datos: [SensorID][Lecturas]
+    private double[][] sensorData = new double[10][4]; 
+
+    public void updateSensor(int id, double pm25, double temp, double hum) {
+        sensorData[id][0] = pm25;
+        sensorData[id][1] = temp;
+        sensorData[id][2] = hum;
+        // Lógica para disparar alertas si PM2.5 > 50
+    }
+}
