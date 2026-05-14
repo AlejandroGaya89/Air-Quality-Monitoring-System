@@ -1,0 +1,13 @@
+import typer
+
+app = typer.Typer()
+
+@app.command()
+def status(sensor_id: int):
+    """Muestra la calidad del aire para un ID específico."""
+    # Lógica simulada de consulta
+    print(f"Consultando Sensor {sensor_id}...")
+    print(f"PM 2.5: 12.5 µg/m3 - Estado: ÓPTIMO")
+
+if __name__ == "__main__":
+    app()
