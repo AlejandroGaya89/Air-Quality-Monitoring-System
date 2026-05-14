@@ -1,0 +1,12 @@
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/api/v1/quality/{sensor_id}")
+async def get_quality(sensor_id: int):
+    return {
+        "sensor_id": sensor_id,
+        "pm25": 45.2,
+        "unit": "ug/m3",
+        "status": "Moderate"
+    }
