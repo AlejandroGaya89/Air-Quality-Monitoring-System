@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(const AQMSApp());
+
+class AQMSApp extends StatelessWidget {
+  const AQMSApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(useMaterial3: true),
+      home: const AlertScreen(),
+    );
+  }
+}
+
+class AlertScreen extends StatelessWidget {
+  const AlertScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Estado del Aire")),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          // Heurística: Visibilidad del estado del sistema
+          child: CriticalAlertCard(
+            pm25Value: 155.5, // Valor de ejemplo (Nivel Crítico)
+            location: "Zona Industrial Norte",
+            onDismiss: () {
+              // Acción de descarte
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Alerta pospuesta por 15 min")),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CriticalAlertCard extends StatelessWidget {
+  final double pm25Value;
+  final String location;
+  final VoidCallback onDismiss;
+
+  const CriticalAlertCard({
+    super.key,
+    required this.pm25Value,
+    required this.location,
+    required this.onDismiss,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.red.shade50,
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(color: Colors.red, width: 2),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 48),
+            const SizedBox(height: 10),
+            Text(
+              "¡ALERTA CRÍTICA!",
+              style: TextStyle(color: Colors.red.shade900, fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const Divider(),
+            Text("Concentración PM 2.5: $pm25Value µg/m³", style: const TextStyle(fontSize: 16)),
+            Text("Ubicación: $location", style: const TextStyle(fontStyle: FontStyle.italic)),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Heurística: Control y libertad del usuario
+                TextButton(onPressed: onDismiss, child: const Text("Descartar")),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),
+                  onPressed: () {}, // Navegar a detalles
+                  child: const Text("Ver Recomendaciones"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
